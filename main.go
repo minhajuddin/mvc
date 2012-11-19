@@ -29,14 +29,16 @@ func (handler *RouteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	http.NotFound(w, r)
 }
 
-func RouteMap(pattern string, handler Action){
+func MapRoute(pattern string, handler Action){
   routes[pattern] = handler
 }
 
 func StartServer(port string){
   log.Printf("Starting server on http://localhost%s/", port)
 	handler := RouteHandler{Version: 1}
-	http.ListenAndServe(port, &handler)
+	if err := http.ListenAndServe(port, &handler); err != nil {
+		panic(err)
+	}
 }
 
 //initialization code
